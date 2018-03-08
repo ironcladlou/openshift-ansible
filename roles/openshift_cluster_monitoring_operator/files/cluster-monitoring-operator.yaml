@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cluster-monitoring-operator
+  namespace: openshift-monitoring
+  labels:
+    k8s-app: cluster-monitoring-operator
+    managed-by-channel-operator: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: cluster-monitoring-operator
+  template:
+    metadata:
+      labels:
+        k8s-app: cluster-monitoring-operator
+        tectonic-app-version-name: tectonic-monitoring
+    spec:
+      containers:
+      - image: quay.io/coreos/tectonic-prometheus-operator:v1.9.4
+        name: cluster-monitoring-operator
+        args:
+        - "-namespace=openshift-monitoring"
+        - "-app-version=openshift-monitoring"
+        - "-logtostderr=true"
+        - "-v=4"
+        resources:
+          limits:
+            cpu: 20m
+            memory: 50Mi
+          requests:
+            cpu: 20m
+            memory: 50Mi
+      restartPolicy: Always
+      securityContext:
+        runAsNonRoot: true
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+      - name: coreos-pull-secret
