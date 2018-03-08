@@ -1,0 +1,7 @@
+apiVersion: tco.coreos.com/v1
+kind: AppVersion
+metadata:
+  name: openshift-monitoring
+  namespace: openshift-monitoring
+spec:
+  desiredVersion: 1.9.4
