@@ -9,7 +9,7 @@
       data:
         installer_phase_prometheus_operator:
           status: "In Progress"
-    start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+          start: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
 
 
 - name: Configure openshift-prometheus
@@ -27,4 +27,4 @@
       data:
         installer_phase_prometheus_operator:
           status: "Complete"
-    end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"
+          end: "{{ lookup('pipe', 'date +%Y%m%d%H%M%SZ') }}"

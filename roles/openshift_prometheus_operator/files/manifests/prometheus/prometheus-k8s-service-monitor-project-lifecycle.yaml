@@ -2,6 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: monitor-project-lifecycle
+  namespace: openshift-monitoring
   labels:
     k8s-app: monitor-project-lifecycle
 spec:

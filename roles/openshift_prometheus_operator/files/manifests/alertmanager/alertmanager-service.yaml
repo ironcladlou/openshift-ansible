@@ -4,6 +4,7 @@ metadata:
   labels:
     alertmanager: main
   name: alertmanager-main
+  namespace: openshift-monitoring
 spec:
   type: NodePort
   ports:
