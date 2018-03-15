@@ -11,11 +11,9 @@ route:
       alertname: DeadMansSwitch
     receiver: 'null'
   - match:
-      alertname: OpenShiftApiserverDown
       severity: critical
     receiver: autoheal
   - match:
-      alertname: OpenShiftApiserverDown
       severity: page
     receiver: 'openshift-pagerduty'
 receivers:
