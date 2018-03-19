@@ -4,6 +4,7 @@ metadata:
   labels:
     prometheus: k8s
   name: prometheus-k8s
+  namespace: openshift-monitoring
 spec:
   type: NodePort
   ports:

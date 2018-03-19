@@ -1,6 +1,6 @@
 ---
-- include_tasks: install.yaml
+- include_tasks: install_prometheus_operator.yaml
   when: openshift_prometheus_operator_install | default(true) | bool
 
-- include_tasks: remove.yaml
+- include_tasks: uninstall_prometheus_operator.yaml
   when: not openshift_prometheus_operator_install | default(true) | bool

@@ -4,7 +4,7 @@ OpenShift Prometheus Operator manages the operator deployment.
 
 # Requirements
 
-Ansible 2.2
+Ansible 2.4
 
 # Role Variables
 

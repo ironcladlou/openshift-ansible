@@ -1,0 +1,8 @@
+---
+- name: Uninstall Prometheus Operator
+  hosts: masters[0]
+  tasks:
+  - name: Run the Prometheus Operator Uninstall Role Tasks
+    include_role:
+      name: openshift_prometheus_operator
+      tasks_from: uninstall_prometheus_operator
