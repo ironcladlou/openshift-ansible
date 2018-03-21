@@ -1,11 +1,10 @@
 ---
 - name: Create temp directory for doing work in on target
-  command: mktemp -d openshift-cluster-monitoring-ansible-XXXXXX
+  command: mktemp -td openshift-cluster-monitoring-ansible-XXXXXX
   register: mktemp
   changed_when: False
 
 - set_fact:
-    tempdir: "{{ mktemp.stdout }}"
     # TODO: remove
     openshift_client_binary: /usr/bin/oc
     openshift:
@@ -28,15 +27,11 @@
     cp {{ openshift.common.config_base }}/master/admin.kubeconfig {{ mktemp.stdout }}/admin.kubeconfig
   changed_when: false
 
-- name: Ensure monitoring project exists
-  command: >
-    {{ openshift_client_binary }} apply -f "{{ mktemp.stdout }}/project.yaml"
-    --config={{ mktemp.stdout }}/admin.kubeconfig
-
-- name: Use monitoring project
-  command: >
-    {{ openshift_client_binary }} project openshift-monitoring
-    --config={{ mktemp.stdout }}/admin.kubeconfig
+- name: Add monitoring project
+  oc_project:
+    state: present
+    name: openshift-monitoring
+    description: Openshift Monitoring
 
 # FIXME maybe we need to change the manifests so this is not needed,
 # or at least change it from default to something more specific
@@ -58,26 +53,12 @@
   - cluster-monitoring-operator.yaml
 
 #TODO: Maybe Routes should be configured by the Operator, not by ansible?
-- name: Wait for Operator to create the prometheus service
-  command: "{{ openshift_client_binary }} get service prometheus"
-  register: result
-  until: result.rc == 0
-  retries: 90
-  delay: 2
-
-- name: Expose prometheus-k8s service
+- name: Expose prometheus service
   oc_route:
-    name: prometheus-k8s
-    service_name: prometheus-k8s
+    name: prometheus
+    service_name: prometheus
     namespace: openshift-monitoring
     state: present
-
-- name: Wait for Operator to create the alertmanager-main service
-  command: "{{ openshift_client_binary }} get service alertmanager-main"
-  register: result
-  until: result.rc == 0
-  retries: 90
-  delay: 2
 
 - name: Expose alertmanager-main service
   oc_route:
@@ -85,13 +66,6 @@
     service_name: alertmanager-main
     namespace: openshift-monitoring
     state: present
-
-- name: Wait for Operator to create the grafana service
-  command: "{{ openshift_client_binary }} get service grafana"
-  register: result
-  until: result.rc == 0
-  retries: 90
-  delay: 2
 
 - name: Expose grafana service
   oc_route:
@@ -102,6 +76,6 @@
 
 - name: Delete temp directory
   file:
-    name: "{{ tempdir }}"
+    name: "{{ mktemp.stdout }}"
     state: absent
   changed_when: False
