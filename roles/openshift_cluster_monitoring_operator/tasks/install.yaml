@@ -4,23 +4,13 @@
   register: mktemp
   changed_when: False
 
-- set_fact:
-    # TODO: remove
-    openshift_client_binary: /usr/bin/oc
-    openshift:
-      common:
-        config_base: /etc/origin
-
 - name: Copy files to temp directory
   copy:
     src: "{{ item }}"
     dest: "{{ mktemp.stdout }}/{{ item }}"
   with_items:
-  - app-version.yaml
-  - app-version-openshift-monitoring.yaml
   - cluster-monitoring-operator.yaml
-  - monitoring-config.yaml
-  - project.yaml
+  - cluster-monitoring-config.yaml
 
 - name: Copy admin client config
   command: >
@@ -33,8 +23,6 @@
     name: openshift-monitoring
     description: Openshift Monitoring
 
-# FIXME maybe we need to change the manifests so this is not needed,
-# or at least change it from default to something more specific
 - name: Add cluster admin permission
   command: >
     {{ openshift_client_binary }} adm policy add-cluster-role-to-user cluster-admin -z default
@@ -47,32 +35,8 @@
     --config={{ mktemp.stdout }}/admin.kubeconfig
     -n openshift-monitoring
   with_items:
-  - monitoring-config.yaml
-  - app-version.yaml
-  - app-version-openshift-monitoring.yaml
+  - cluster-monitoring-config.yaml
   - cluster-monitoring-operator.yaml
-
-#TODO: Maybe Routes should be configured by the Operator, not by ansible?
-- name: Expose prometheus service
-  oc_route:
-    name: prometheus
-    service_name: prometheus
-    namespace: openshift-monitoring
-    state: present
-
-- name: Expose alertmanager-main service
-  oc_route:
-    name: alertmanager-main
-    service_name: alertmanager-main
-    namespace: openshift-monitoring
-    state: present
-
-- name: Expose grafana service
-  oc_route:
-    name: grafana
-    service_name: grafana
-    namespace: openshift-monitoring
-    state: present
 
 - name: Delete temp directory
   file:

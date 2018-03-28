@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -18,11 +19,11 @@ spec:
         tectonic-app-version-name: tectonic-monitoring
     spec:
       containers:
-      - image: quay.io/coreos/tectonic-prometheus-operator:v1.9.4
+      - image: quay.io/coreos/cluster-monitoring-operator:198d25d6
         name: cluster-monitoring-operator
         args:
         - "-namespace=openshift-monitoring"
-        - "-app-version=openshift-monitoring"
+        - "-configmap=cluster-monitoring-config"
         - "-logtostderr=true"
         - "-v=4"
         resources:
@@ -36,5 +37,3 @@ spec:
       securityContext:
         runAsNonRoot: true
       terminationGracePeriodSeconds: 30
-      imagePullSecrets:
-      - name: coreos-pull-secret
