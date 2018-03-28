@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: place all scale groups into Ansible groups
+    include_role:
+      name: openshift_gcp
+      tasks_from: setup_scale_group_facts.yml
+
+- import_playbook: ./config.yml
