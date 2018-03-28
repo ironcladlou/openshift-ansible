@@ -1,16 +1,12 @@
 # OpenShift Cluster Monitoring Operator
 
-OpenShift Cluster Monitoring Operator manages the TPO deployment.
+The OpenShift Cluster Monitoring Operator role manages the TPO deployment.
+TPO is an operator that deploys our monitoring stack (Prometheus, AlertManager)
+with out-of-the-box alerts and metrics.
 
 # Requirements
 
 Ansible 2.4
-
-# Role Variables
-
-| Name                                      | Default                |                  |
-|-------------------------------------------|------------------------|------------------|
-|                                           |                        |                  |
 
 # Dependencies
 
