@@ -1,5 +1,4 @@
 ---
-- import_playbook: ../../playbooks/init/main.yml
 - name: Cluster Monitoring Operator Checkpoint Start
   hosts: all
   gather_facts: false
