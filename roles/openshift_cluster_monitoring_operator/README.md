@@ -49,6 +49,18 @@ To ship a new component integration, the following things must happen:
 
 See the [openshift-monitoring playbook](../../playbooks/openshift-monitoring) for installation options.
 
+## Role Variables
+
+For default values, see [`defaults/main.yaml`](defaults/main.yaml).
+
+- `openshift_cluster_monitoring_operator_install`: true - install/update. false - uninstall.
+- `openshift_cluster_monitoring_operator_image`: TPO image to use
+- `openshift_cluster_monitoring_operator_prometheus_operator_image`: Prometheus Operator image to use 
+- `openshift_cluster_monitoring_operator_prometheus_image`: Prometheus image to use
+- `openshift_cluster_monitoring_operator_alertmanager_image`: AlertManager image to use
+- `openshift_cluster_monitoring_operator_prometheus_reloader_image`: Prometheus Reloader image to use
+- `openshift_cluster_monitoring_oeprator_configmap_reloader_image`: ConfigMap reloader image to use
+
 # Requirements
 
 Ansible 2.4
